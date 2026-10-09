@@ -82,6 +82,46 @@ a { color: inherit; text-decoration: none; }
 .user-btn:hover { border-color: var(--primary); color: var(--primary-deep); }
 .user-btn.logged-in { border-color: var(--green); color: var(--green); background: var(--green-soft); }
 
+/* ---------- gate ---------- */
+.gate { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; background: rgba(43,29,16,.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); opacity: 0; pointer-events: none; transition: opacity .3s; }
+.gate.open { opacity: 1; pointer-events: auto; }
+.gate-card { width: min(420px, calc(100vw - 32px)); background: #fff; border-radius: 24px; padding: 36px 30px; box-shadow: var(--shadow-float); text-align: center; }
+.gate-card .logo-mark { margin: 0 auto 16px; }
+.gate-card h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.gate-card p { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 24px; }
+.gate-actions { display: flex; flex-direction: column; gap: 10px; }
+.guest-link { font-size: 13px; color: var(--ink-soft); margin-top: 4px; }
+.guest-link:hover { color: var(--primary-deep); }
+
+/* ---------- account center ---------- */
+.account-body { padding: 30px 28px 28px; }
+.account-body h3 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+.account-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 18px; }
+.addr-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+.addr-item { display: flex; align-items: start; gap: 12px; background: var(--bg); border-radius: 14px; padding: 14px 16px; }
+.addr-item .info { flex: 1; min-width: 0; }
+.addr-item .info b { font-size: 14px; display: block; }
+.addr-item .info span { font-size: 12.5px; color: var(--ink-soft); display: block; margin-top: 2px; line-height: 1.5; }
+.addr-item .actions { display: flex; gap: 6px; flex: none; }
+.addr-item .actions button { font-size: 12px; font-weight: 700; padding: 5px 10px; border-radius: 8px; background: #fff; color: var(--ink-soft); border: 1px solid var(--line); transition: .15s; }
+.addr-item .actions button:hover { color: var(--primary-deep); border-color: var(--primary); }
+.addr-item .actions button.danger:hover { color: var(--red); border-color: var(--red); }
+.default-tag { display: inline-block; font-size: 11px; font-weight: 700; color: var(--green); background: var(--green-soft); padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+.empty-addr { text-align: center; font-size: 13px; color: var(--ink-soft); background: var(--bg); border-radius: 14px; padding: 24px 16px; margin-bottom: 16px; }
+.logout-btn { width: 100%; margin-top: 4px; justify-content: center; background: #fff; border: 1.5px solid var(--line); color: var(--ink-soft); }
+.logout-btn:hover { border-color: var(--red); color: var(--red); }
+.checkout-addr-pick { margin-bottom: 16px; }
+.addr-pick-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.submit-pick-btn { padding: 10px 18px; font-size: 14px; }
+.checkout-addr-pick label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.checkout-addr-options { display: flex; flex-direction: column; gap: 8px; }
+.addr-option { display: flex; align-items: center; gap: 10px; background: var(--bg); border-radius: 12px; padding: 10px 14px; cursor: pointer; border: 1.5px solid transparent; transition: .15s; }
+.addr-option:hover { border-color: var(--line); }
+.addr-option input { accent-color: var(--primary); }
+.addr-option span { font-size: 13px; line-height: 1.5; }
+.link-btn { background: none; color: var(--primary-deep); font-size: 13px; font-weight: 700; padding: 0; }
+.link-btn:hover { text-decoration: underline; }
+
 
 /* ---------- hero ---------- */
 .hero { padding: 64px 0 56px; }
@@ -234,6 +274,8 @@ a { color: inherit; text-decoration: none; }
 /* ---------- modal & drawer ---------- */
 .overlay {
   position: fixed; inset: 0; background: rgba(43,29,16,.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 100; opacity: 0; pointer-events: none; transition: opacity .25s;
 }
 .overlay.open { opacity: 1; pointer-events: auto; }
@@ -546,6 +588,42 @@ a { color: inherit; text-decoration: none; }
 </footer>
 
 <!-- ================= auth modal ================= -->
+<!-- ================= gate ================= -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <span class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="6" cy="8" r="2"/><circle cx="4" cy="15" r="2"/><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.5-2-4.5-1.5-1.5-3-2-5-2s-3.5.5-5 2c-1 1-2 2.5-2 4.5a7 7 0 0 0 7 7z"/></svg>
+    </span>
+    <h2>欢迎来到馋爪零食铺</h2>
+    <p>登录后可以管理地址、跟踪订单；也可以先以游客身份逛逛</p>
+    <div class="gate-actions">
+      <button class="btn btn-primary" id="gateLoginBtn" style="justify-content:center">登录 / 注册</button>
+      <button class="btn btn-ghost" id="gateGuestBtn" style="justify-content:center">游客进入</button>
+    </div>
+    <p class="auth-tip" style="margin-top:14px">演示站点 · 账号只保存在当前浏览器</p>
+  </div>
+</div>
+
+<!-- ================= account modal ================= -->
+<div class="modal auth-modal" id="accountModal" role="dialog" aria-modal="true">
+  <button class="close-x" id="accountCloseBtn" aria-label="关闭">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <div class="account-body">
+    <h3 id="accountName">账户中心</h3>
+    <p class="account-sub" id="accountPhone">登录后可管理收货地址</p>
+    <div id="accountAddrSection">
+      <div class="addr-list" id="accountAddrList"></div>
+      <button class="btn btn-ghost" id="addAddrBtn" style="width:100%;justify-content:center;margin-bottom:12px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        新增地址
+      </button>
+    </div>
+    <button class="btn logout-btn" id="logoutBtn">退出登录</button>
+  </div>
+</div>
+
+<!-- ================= auth modal ================= -->
 <div class="modal auth-modal" id="authModal" role="dialog" aria-modal="true">
   <button class="close-x" id="authCloseBtn" aria-label="关闭">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -591,7 +669,15 @@ a { color: inherit; text-decoration: none; }
       <h3>填写收货地址</h3>
       <p class="addr-sub">填清楚点，不然快递小哥找不着你家狗</p>
       <div class="order-summary" id="orderSummary"></div>
-      <form id="addrForm" novalidate>
+      <div class="checkout-addr-pick" id="addrPickSection">
+        <label>选择收货地址</label>
+        <div class="checkout-addr-options" id="addrPickOptions"></div>
+        <div class="addr-pick-actions">
+          <button type="button" class="link-btn" id="pickNewAddrBtn">+ 新地址</button>
+          <button type="button" class="btn btn-primary submit-pick-btn" id="submitPickBtn">用选中地址下单</button>
+        </div>
+      </div>
+      <form id="addrForm" novalidate style="display:none">
         <div class="addr-fields">
           <div class="field">
             <label for="addrName">收货人</label>
@@ -614,7 +700,7 @@ a { color: inherit; text-decoration: none; }
             <div class="field-err">请填写详细地址</div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary auth-submit">提交订单</button>
+        <button type="submit" class="btn btn-primary auth-submit">保存地址</button>
         <p class="auth-tip">演示站点 · 地址只保存在当前浏览器，不会上传</p>
       </form>
     </div>
@@ -801,7 +887,8 @@ const cart = new Map(); // id -> qty
 /* ============ 用户 / 账号（localStorage 演示） ============ */
 const ACCOUNT_KEY = 'cz_users';
 const SESSION_KEY = 'cz_session';
-const ADDR_KEY = 'cz_last_address';
+const GUEST_KEY = 'cz_guest';
+const ADDR_KEY = 'cz_addresses'; // { [phone]: [ {id,name,phone,region,detail} ] }
 
 function loadAccounts() {
   try { return JSON.parse(localStorage.getItem(ACCOUNT_KEY)) || {}; } catch { return {}; }
@@ -818,6 +905,18 @@ function loadSavedAddress() {
   try { return JSON.parse(localStorage.getItem(ADDR_KEY)); } catch { return null; }
 }
 function saveAddress(addr) { localStorage.setItem(ADDR_KEY, JSON.stringify(addr)); }
+function isGuest() { return localStorage.getItem(GUEST_KEY) === '1'; }
+function setGuest(on) { if (on) localStorage.setItem(GUEST_KEY, '1'); else localStorage.removeItem(GUEST_KEY); }
+function loadAddresses() {
+  const user = currentUser(); if (!user) return [];
+  try { const all = JSON.parse(localStorage.getItem(ADDR_KEY)) || {}; return all[user.phone] || []; } catch { return []; }
+}
+function saveAddresses(list) {
+  const user = currentUser(); if (!user) return;
+  const all = (()=>{ try { return JSON.parse(localStorage.getItem(ADDR_KEY)) || {}; } catch { return {}; } })();
+  all[user.phone] = list;
+  localStorage.setItem(ADDR_KEY, JSON.stringify(all));
+}
 function isValidPhone(v) { return /^1\d{10}$/.test(v); }
 function setFieldError(fieldId, on) { $('#' + fieldId).classList.toggle('invalid', !!on); }
 function currentUser() { return loadSession(); }
@@ -856,7 +955,7 @@ function closeAuth() {
 }
 
 function anyModalOpen() {
-  return ['productModal','cartDrawer','authModal','checkoutModal'].some(id => $('#' + id).classList.contains('open'));
+  return ['productModal','cartDrawer','authModal','checkoutModal','accountModal'].some(id => $('#' + id).classList.contains('open'));
 }
 function closeOverlay() {
   $('#overlay').classList.remove('open');
@@ -882,11 +981,74 @@ function handleAuthSubmit(e) {
     if (!accounts[phone]) { showToast('账号不存在，先注册一个'); setAuthMode('register'); return; }
     if (accounts[phone].pass !== pass) { showToast('密码不对，再想想'); return; }
   }
+  setGuest(false);
   saveSession({ phone, name: accounts[phone].name });
   renderUserBtn();
-  closeAuth();
+  closeAuth(); closeGate();
   showToast(`欢迎，${accounts[phone].name}`);
   if (authRedirect === 'checkout') { authRedirect = null; setTimeout(openCheckout, 250); }
+}
+
+/* ============ 门禁 ============ */
+function openGate() { $('#gate').classList.add('open'); }
+function closeGate() { $('#gate').classList.remove('open'); }
+function enterAsGuest() {
+  setGuest(true);
+  closeGate();
+  showToast('游客模式 · 下单前需要登录');
+}
+
+/* ============ 账户中心 ============ */
+function openAccount() {
+  const user = currentUser(); if (!user) return;
+  $('#accountName').textContent = user.name;
+  $('#accountPhone').textContent = `手机号 ${user.phone}`;
+  renderAccountAddrs();
+  $('#accountModal').classList.add('open');
+  $('#overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAccount() {
+  $('#accountModal').classList.remove('open');
+  if (!anyModalOpen()) closeOverlay();
+}
+
+function renderAccountAddrs() {
+  const list = loadAddresses();
+  const wrap = $('#accountAddrList');
+  if (!list.length) {
+    wrap.innerHTML = '<div class="empty-addr">还没有收货地址，点下面新增一个吧</div>';
+    return;
+  }
+  wrap.innerHTML = list.map((a, i) => {
+    return `
+      <div class="addr-item">
+        <div class="info">
+          <b>${a.name}${i === 0 ? '<span class="default-tag">默认</span>' : ''}</b>
+          <span>${a.phone} · ${a.region}</span>
+          <span>${a.detail}</span>
+        </div>
+        <div class="actions">
+          ${i > 0 ? `<button data-set-default="${a.id}">设默认</button>` : ''}
+          <button class="danger" data-del-addr="${a.id}">删除</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function openAddrFormInCheckout() {
+  $('#addrPickSection').style.display = 'none';
+  $('#addrForm').style.display = '';
+}
+
+function openAddrFormInAccount() {
+  openCheckout();
+  openAddrFormInCheckout();
+  $('#addrFormView').style.display = '';
+  $('#successView').style.display = 'none';
+  $('#orderSummary').innerHTML = '<div class="row"><span>账户中心 · 新增地址</span></div>';
+  $('#addrForm').dataset.mode = 'account';
 }
 
 function renderUserBtn() {
@@ -895,13 +1057,24 @@ function renderUserBtn() {
   if (user) {
     btnText.textContent = user.name;
     $('#userBtn').classList.add('logged-in');
+    $('#userBtn').classList.remove('guest');
+  } else if (isGuest()) {
+    btnText.textContent = '游客';
+    $('#userBtn').classList.remove('logged-in');
+    $('#userBtn').classList.add('guest');
   } else {
     btnText.textContent = '登录 / 注册';
-    $('#userBtn').classList.remove('logged-in');
+    $('#userBtn').classList.remove('logged-in', 'guest');
   }
 }
 
-
+function logout() {
+  saveSession(null); setGuest(false);
+  renderUserBtn();
+  closeAccount();
+  openGate();
+  showToast('已退出登录');
+}
 
 function showToast(msg) {
   const toast = $('#toast');
@@ -1017,14 +1190,10 @@ function closeModal() {
 /* ============ 购物车 ============ */
 /* ============ 结算 / 地址弹窗 ============ */
 function openCheckout() {
-  if (!currentUser()) { openAuth('checkout'); return; }
-  const saved = loadSavedAddress();
-  if (saved) {
-    $('#addrName').value = saved.name || '';
-    $('#addrPhone').value = saved.phone || '';
-    $('#addrRegion').value = saved.region || '';
-    $('#addrDetail').value = saved.detail || '';
-  }
+  const user = currentUser();
+  if (!user) { closeCart(); openAuth('checkout'); return; }
+  const addrs = loadAddresses();
+  const hasAddrs = addrs.length > 0;
   const lines = [...cart.entries()].map(([id, qty]) => {
     const p = productById(id); return `${p.name} x${qty}`;
   }).join('、');
@@ -1032,11 +1201,28 @@ function openCheckout() {
     <div class="row"><span>商品</span><span style="text-align:right;max-width:70%">${lines}</span></div>
     <div class="row"><span>共</span><span>${cartTotalCount()} 件</span></div>
     <div class="row"><span>合计</span><b>${money(cartTotalAmount())}</b></div>`;
+  $('#addrPickSection').style.display = hasAddrs ? '' : 'none';
+  $('#addrForm').style.display = hasAddrs ? 'none' : '';
+  $('#addrForm').dataset.mode = 'checkout';
+  if (hasAddrs) renderAddrPickOptions();
+  else $('#addrForm').reset();
   $('#addrFormView').style.display = '';
   $('#successView').style.display = 'none';
   $('#checkoutModal').classList.add('open');
   $('#overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function renderAddrPickOptions() {
+  const addrs = loadAddresses();
+  const wrap = $('#addrPickOptions');
+  wrap.innerHTML = addrs.map((a, i) => {
+    return `
+      <label class="addr-option">
+        <input type="radio" name="pickAddr" value="${a.id}" ${i === 0 ? 'checked' : ''}>
+        <span>${a.name} · ${a.phone}<br>${a.region} ${a.detail}</span>
+      </label>`;
+  }).join('');
 }
 
 function closeCheckout() {
@@ -1046,6 +1232,7 @@ function closeCheckout() {
 
 function handleAddrSubmit(e) {
   e.preventDefault();
+  const mode = $('#addrForm').dataset.mode;
   const name = $('#addrName').value.trim();
   const phone = $('#addrPhone').value.trim();
   const region = $('#addrRegion').value.trim();
@@ -1056,13 +1243,24 @@ function handleAddrSubmit(e) {
   if (!region) invalid = true;
   if (!detail) invalid = true;
   if (invalid) { showToast('地址信息没填全，检查一下再提交'); return; }
-  saveAddress({ name, phone, region, detail });
+  const list = loadAddresses();
+  list.push({ id: 'a' + Date.now(), name, phone, region, detail });
+  saveAddresses(list);
+  if (mode === 'account') {
+    showToast('地址已保存');
+    closeCheckout();
+    setTimeout(openAccount, 200);
+  } else {
+    completeOrder();
+  }
+}
+
+function completeOrder() {
   $('#addrFormView').style.display = 'none';
   $('#successView').style.display = '';
   cart.clear();
   renderCart();
 }
-
 /* ============ 购物车 ============ */
 function cartTotalCount() {
   let n = 0;
@@ -1188,21 +1386,55 @@ document.addEventListener('click', (e) => {
   if (removeBtn) { removeItem(removeBtn.dataset.remove); return; }
 });
 
+document.addEventListener('click', (e) => {
+  const defaultBtn = e.target.closest('[data-set-default]');
+  if (defaultBtn) {
+    const list = loadAddresses();
+    const index = list.findIndex(a => a.id === defaultBtn.dataset.setDefault);
+    if (index > 0) saveAddresses([list[index], ...list.filter((_, i) => i !== index)]);
+    renderAccountAddrs();
+    showToast('默认地址已更新');
+    return;
+  }
+
+  const deleteBtn = e.target.closest('[data-del-addr]');
+  if (deleteBtn) {
+    saveAddresses(loadAddresses().filter(a => a.id !== deleteBtn.dataset.delAddr));
+    renderAccountAddrs();
+    showToast('地址已删除');
+    return;
+  }
+});
+
 $('#cartOpenBtn').addEventListener('click', openCart);
 $('#heroCartBtn').addEventListener('click', openCart);
 $('#drawerCloseBtn').addEventListener('click', closeCart);
 $('#modalCloseBtn').addEventListener('click', closeModal);
-$('#userBtn').addEventListener('click', () => { if (!currentUser()) openAuth(); });
+$('#userBtn').addEventListener('click', () => {
+  if (currentUser()) openAccount();
+  else openAuth();
+});
+$('#gateLoginBtn').addEventListener('click', () => openAuth());
+$('#gateGuestBtn').addEventListener('click', enterAsGuest);
 $('#tabLogin').addEventListener('click', () => setAuthMode('login'));
 $('#tabRegister').addEventListener('click', () => setAuthMode('register'));
 $('#authForm').addEventListener('submit', handleAuthSubmit);
 $('#authCloseBtn').addEventListener('click', closeAuth);
+$('#accountCloseBtn').addEventListener('click', closeAccount);
+$('#addAddrBtn').addEventListener('click', openAddrFormInAccount);
+$('#logoutBtn').addEventListener('click', logout);
 $('#addrForm').addEventListener('submit', handleAddrSubmit);
 $('#checkoutCloseBtn').addEventListener('click', closeCheckout);
+$('#pickNewAddrBtn').addEventListener('click', openAddrFormInCheckout);
+$('#submitPickBtn').addEventListener('click', () => {
+  const checked = document.querySelector('input[name="pickAddr"]:checked');
+  if (!checked) { showToast('先选一个收货地址'); return; }
+  completeOrder();
+});
 $('#successDoneBtn').addEventListener('click', () => { closeCheckout(); showToast('感谢惠顾，毛孩子等着呢'); });
-$('#overlay').addEventListener('click', () => { closeModal(); closeCart(); closeAuth(); closeCheckout(); });
+$('#overlay').addEventListener('click', () => { closeModal(); closeCart(); closeAuth(); closeCheckout(); closeAccount(); });
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { closeModal(); closeCart(); closeAuth(); closeCheckout(); }
+  if (e.key === 'Escape') { closeModal(); closeCart(); closeAuth(); closeCheckout(); closeAccount(); }
 });
 $('#modalAddBtn').addEventListener('click', () => {
   if (modalProductId) {
@@ -1221,15 +1453,10 @@ renderFilters();
 renderProducts();
 renderRanking();
 renderCart();
+renderUserBtn();
+if (!currentUser() && !isGuest()) openGate();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
 
 
