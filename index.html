@@ -82,6 +82,54 @@ a { color: inherit; text-decoration: none; }
 .user-btn:hover { border-color: var(--primary); color: var(--primary-deep); }
 .user-btn.logged-in { border-color: var(--green); color: var(--green); background: var(--green-soft); }
 
+/* ---------- admin ---------- */
+.admin-btn { display: none; align-items: center; gap: 6px; background: transparent; color: var(--ink-soft); padding: 9px 14px; border-radius: 999px; font-size: 14px; font-weight: 600; border: 1.5px solid var(--line); transition: .2s; }
+.admin-btn.show { display: inline-flex; }
+.admin-btn:hover { border-color: var(--primary); color: var(--primary-deep); }
+.admin-panel { position: fixed; inset: 0; z-index: 250; background: var(--bg); display: none; flex-direction: column; }
+.admin-panel.open { display: flex; }
+.admin-head { display: flex; align-items: center; gap: 20px; padding: 16px 28px; background: #fff; border-bottom: 1px solid var(--line); }
+.admin-head h2 { font-size: 18px; font-weight: 800; margin-right: auto; }
+.admin-tabs { display: flex; gap: 6px; }
+.admin-tab { padding: 8px 18px; border-radius: 999px; font-size: 14px; font-weight: 700; color: var(--ink-soft); background: var(--bg); transition: .15s; }
+.admin-tab.active { background: var(--ink); color: #fff; }
+.admin-close { width: 36px; height: 36px; border-radius: 50%; background: var(--bg); display: grid; place-items: center; }
+.admin-close:hover { color: var(--red); }
+.admin-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
+.admin-view { display: none; }
+.admin-view.active { display: block; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: #fff; border-radius: var(--radius-md); padding: 20px 22px; box-shadow: var(--shadow-card); }
+.stat-card .label { font-size: 13px; color: var(--ink-soft); }
+.stat-card .value { font-size: 26px; font-weight: 800; margin-top: 4px; color: var(--ink); }
+.admin-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-card); }
+.admin-table th, .admin-table td { text-align: left; padding: 12px 16px; font-size: 13.5px; border-bottom: 1px solid var(--line); }
+.admin-table th { background: var(--bg-soft); font-weight: 700; color: var(--ink-soft); font-size: 12.5px; }
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table .btn-mini { padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; background: var(--bg); border: 1px solid var(--line); color: var(--ink-soft); }
+.admin-table .btn-mini:hover { border-color: var(--primary); color: var(--primary-deep); }
+.admin-table .btn-mini.danger:hover { border-color: var(--red); color: var(--red); }
+.order-item { background: #fff; border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 12px; box-shadow: var(--shadow-card); }
+.order-item .row1 { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.order-item .row1 b { font-size: 14px; }
+.order-item .row1 .time { font-size: 12.5px; color: var(--ink-soft); }
+.order-item .items { margin-top: 8px; font-size: 13px; color: var(--ink-soft); }
+.order-item .addr { margin-top: 6px; font-size: 12.5px; color: var(--ink-soft); }
+.admin-form { background: #fff; border-radius: var(--radius-md); padding: 20px 22px; box-shadow: var(--shadow-card); margin-bottom: 20px; display: none; }
+.admin-form.open { display: block; }
+.admin-form h3 { font-size: 16px; margin-bottom: 14px; }
+.admin-form .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.admin-form .field-grid .full { grid-column: 1 / -1; }
+.admin-form input, .admin-form select, .admin-form textarea { width: 100%; padding: 9px 12px; border: 1.5px solid var(--line); border-radius: 10px; font-size: 14px; font-family: inherit; }
+.admin-form textarea { resize: vertical; min-height: 64px; }
+.admin-form .form-actions { display: flex; gap: 10px; margin-top: 14px; }
+.rank-bars { background: #fff; border-radius: var(--radius-md); padding: 20px 22px; box-shadow: var(--shadow-card); }
+.rank-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.rank-bar-row .name { width: 180px; font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-bar-row .track { flex: 1; height: 20px; background: var(--bg-soft); border-radius: 999px; overflow: hidden; }
+.rank-bar-row .fill { height: 100%; background: var(--primary); border-radius: 999px; transition: width .4s; }
+.rank-bar-row .num { width: 70px; text-align: right; font-size: 13px; font-weight: 700; color: var(--primary-deep); }
+
 /* ---------- gate ---------- */
 .gate { position: fixed; inset: 0; z-index: 300; display: grid; place-items: center; background: rgba(43,29,16,.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); opacity: 0; pointer-events: none; transition: opacity .3s; }
 .gate.open { opacity: 1; pointer-events: auto; }
@@ -287,7 +335,7 @@ a { color: inherit; text-decoration: none; }
 }
 .overlay.open { opacity: 1; pointer-events: auto; }
 .modal {
-  position: fixed; z-index: 110; top: 50%; left: 50%;
+  position: fixed; z-index: 320; top: 50%; left: 50%;
   transform: translate(-50%, -46%) scale(.96);
   width: min(760px, calc(100vw - 32px));
   background: #fff; border-radius: 24px; overflow: hidden;
@@ -455,6 +503,10 @@ a { color: inherit; text-decoration: none; }
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span id="userBtnText">登录 / 注册</span>
       </button>
+      <button class="admin-btn" id="adminBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        管理后台
+      </button>
       <button class="cart-btn" id="cartOpenBtn" aria-label="打开购物车">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
         购物车
@@ -583,6 +635,67 @@ a { color: inherit; text-decoration: none; }
     </div>
   </div>
 </section>
+
+<!-- ================= admin panel ================= -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-head">
+    <h2>管理后台</h2>
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-atab="orders">订单</button>
+      <button class="admin-tab" data-atab="products">商品管理</button>
+      <button class="admin-tab" data-atab="stats">统计</button>
+    </div>
+    <button class="admin-close" id="adminCloseBtn" aria-label="关闭后台">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-view active" id="adminViewOrders">
+      <div id="adminOrderList"></div>
+    </div>
+    <div class="admin-view" id="adminViewProducts">
+      <button class="btn btn-primary" id="newProductBtn" style="margin-bottom:16px">+ 上架新品</button>
+      <div class="admin-form" id="productFormWrap">
+        <h3 id="productFormTitle">上架新品</h3>
+        <form id="productForm" novalidate>
+          <div class="field-grid">
+            <div class="field full"><label>商品名称</label><input type="text" id="pfName" maxlength="40"></div>
+            <div class="field"><label>价格（￥）</label><input type="number" id="pfPrice" min="0.01" step="0.01"></div>
+            <div class="field"><label>原价（￥，可空）</label><input type="number" id="pfOldPrice" min="0" step="0.01"></div>
+            <div class="field"><label>规格</label><input type="text" id="pfWeight" placeholder="如：180g / 袋"></div>
+            <div class="field"><label>宠物分类</label>
+              <select id="pfPet"><option value="dog">狗狗</option><option value="cat">猫咪</option></select>
+            </div>
+            <div class="field"><label>零食分类</label>
+              <select id="pfType"><option value="meat">肉干</option><option value="chew">磨牙棒</option><option value="nutrition">营养零食</option><option value="treat">互动零食</option></select>
+            </div>
+            <div class="field"><label>图片</label>
+              <select id="pfImage"></select>
+            </div>
+            <div class="field"><label>已售（件）</label><input type="number" id="pfSales" min="0" value="0"></div>
+            <div class="field full"><label>描述</label><textarea id="pfDesc" maxlength="200"></textarea></div>
+            <div class="field full"><label>成分标签（逗号分隔）</label><input type="text" id="pfIngredients" placeholder="如：单一牛肉源,0 谷物"></div>
+            <div class="field full" style="display:flex;align-items:center;gap:8px">
+              <input type="checkbox" id="pfHot" style="width:auto"> <label for="pfHot" style="margin:0">标记为热卖</label>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <button type="button" class="btn btn-ghost" id="pfCancelBtn">取消</button>
+          </div>
+        </form>
+      </div>
+      <table class="admin-table" id="adminProductTable">
+        <thead><tr><th>商品</th><th>分类</th><th>价格</th><th>已售</th><th>状态</th><th>操作</th></tr></thead>
+        <tbody id="adminProductRows"></tbody>
+      </table>
+    </div>
+    <div class="admin-view" id="adminViewStats">
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="rank-bars" id="statRankBars"></div>
+    </div>
+  </div>
+</div>
 
 <!-- ================= footer ================= -->
 <footer class="footer">
@@ -778,7 +891,7 @@ a { color: inherit; text-decoration: none; }
 
 <script>
 /* ============ 商品数据（演示） ============ */
-const PRODUCTS = [
+const DEFAULT_PRODUCTS = [
   {
     id: 'p01', name: '低温烘培牛肉风干片', price: 39.9, oldPrice: 49.0,
     weight: '180g / 袋', pet: 'dog', type: 'meat',
@@ -877,6 +990,24 @@ const PRODUCTS = [
   }
 ];
 
+let PRODUCTS = [];
+const PRODUCT_KEY = 'cz_products';
+function loadProducts() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(PRODUCT_KEY));
+    if (Array.isArray(saved) && saved.length) return saved;
+  } catch {}
+  localStorage.setItem(PRODUCT_KEY, JSON.stringify(DEFAULT_PRODUCTS));
+  return [...DEFAULT_PRODUCTS];
+}
+function saveProducts() { localStorage.setItem(PRODUCT_KEY, JSON.stringify(PRODUCTS)); }
+
+const ORDERS_KEY = 'cz_orders';
+function loadOrders() {
+  try { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; } catch { return []; }
+}
+function saveOrders(list) { localStorage.setItem(ORDERS_KEY, JSON.stringify(list)); }
+
 const PET_GROUPS = [
   { key: 'all', label: '全部宠物' },
   { key: 'dog', label: '狗狗' },
@@ -970,7 +1101,7 @@ function closeAuth() {
 }
 
 function anyModalOpen() {
-  return ['productModal','cartDrawer','authModal','checkoutModal','accountModal'].some(id => $('#' + id).classList.contains('open'));
+  return ['productModal','cartDrawer','authModal','checkoutModal','accountModal'].some(id => $('#' + id).classList.contains('open')) || $('#adminPanel').classList.contains('open');
 }
 function closeOverlay() {
   $('#overlay').classList.remove('open');
@@ -1073,13 +1204,16 @@ function renderUserBtn() {
     btnText.textContent = user.name;
     $('#userBtn').classList.add('logged-in');
     $('#userBtn').classList.remove('guest');
+    $('#adminBtn').classList.add('show');
   } else if (isGuest()) {
     btnText.textContent = '游客';
     $('#userBtn').classList.remove('logged-in');
     $('#userBtn').classList.add('guest');
+    $('#adminBtn').classList.remove('show');
   } else {
     btnText.textContent = '登录 / 注册';
     $('#userBtn').classList.remove('logged-in', 'guest');
+    $('#adminBtn').classList.remove('show');
   }
 }
 
@@ -1276,6 +1410,33 @@ function handleAddrSubmit(e) {
 }
 
 function completeOrder() {
+  const user = currentUser();
+  const addrs = loadAddresses();
+  const addr = addrs[0] || {};
+  const items = [...cart.entries()].map(([id, qty]) => {
+    const p = productById(id);
+    return { id, name: p.name, price: p.price, qty, image: p.image };
+  });
+  const order = {
+    id: 'o' + Date.now(),
+    user: user ? { name: user.name, phone: user.phone } : { name: '游客', phone: '-' },
+    addr: { name: addr.name || '-', phone: addr.phone || '-', region: addr.region || '-', detail: addr.detail || '-' },
+    items,
+    total: cartTotalAmount(),
+    time: new Date().toLocaleString('zh-CN')
+  };
+  const orders = loadOrders();
+  orders.unshift(order);
+  saveOrders(orders);
+
+  /* sync sales numbers into product store */
+  items.forEach(it => {
+    const p = productById(it.id);
+    if (p) p.sales += it.qty;
+  });
+  saveProducts();
+  renderRanking();
+
   $('#addrFormView').style.display = 'none';
   $('#successView').style.display = '';
   cart.clear();
@@ -1480,7 +1641,199 @@ $('#checkoutBtn').addEventListener('click', () => {
   closeCart();
   setTimeout(openCheckout, 220);
 });
+/* ============ 管理后台 ============ */
+let adminTab = 'orders';
+let editingProductId = null;
+
+const IMAGE_OPTIONS = [
+  'images/dog-tongue-out.jpg', 'images/brown-white-dog-smiling.jpg', 'images/beagle.jpg',
+  'images/french-bulldog.jpg', 'images/two-dogs-running.jpg', 'images/hero-dog-with-toy.jpg',
+  'images/orange-cat-looking-up.jpg', 'images/cat-raising-paw.jpg', 'images/cat-yawning.jpg',
+  'images/cat-sized.jpg', 'images/cat-and-dog-snuggle.jpg', 'images/bone-biscuits-pink.jpg',
+  'images/bowl-with-kibble.jpg'
+];
+
+function openAdmin() {
+  $('#adminPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderAdmin();
+}
+function closeAdmin() {
+  $('#adminPanel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setAdminTab(tab) {
+  adminTab = tab;
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('active', t.dataset.atab === tab));
+  document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+  $('#adminView' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  renderAdmin();
+}
+
+function renderAdmin() {
+  if (adminTab === 'orders') renderAdminOrders();
+  else if (adminTab === 'products') renderAdminProducts();
+  else renderAdminStats();
+}
+
+function renderAdminOrders() {
+  const wrap = $('#adminOrderList');
+  const orders = loadOrders();
+  if (!orders.length) {
+    wrap.innerHTML = '<div class="empty-tip">还没有订单，等毛孩子的主人来下单吧。</div>';
+    return;
+  }
+  wrap.innerHTML = orders.map(o => `
+    <div class="order-item">
+      <div class="row1">
+        <b>${o.id}</b>
+        <span class="time">${o.time}</span>
+        <span class="time">下单人：${o.user.name}（${o.user.phone}）</span>
+        <b style="margin-left:auto">${money(o.total)}</b>
+      </div>
+      <div class="items">${o.items.map(i => `${i.name} ×${i.qty}`).join('、')}</div>
+      <div class="addr">收货：${o.addr.name} · ${o.addr.phone} · ${o.addr.region} ${o.addr.detail}</div>
+    </div>`).join('');
+}
+
+function renderAdminProducts() {
+  const tbody = $('#adminProductRows');
+  tbody.innerHTML = PRODUCTS.map(p => `
+    <tr>
+      <td>${p.name}<br><small style="color:var(--ink-soft)">${p.weight}</small></td>
+      <td>${PET_LABEL[p.pet]} · ${TYPE_LABEL[p.type]}</td>
+      <td>${money(p.price)}</td>
+      <td>${p.sales}</td>
+      <td>${p.offline ? '<span class="default-tag" style="color:var(--red);background:#FDECEC">已下架</span>' : '<span class="default-tag">在售</span>'}</td>
+      <td style="white-space:nowrap">
+        <button class="btn-mini" data-pedit="${p.id}">编辑</button>
+        <button class="btn-mini" data-ptoggle="${p.id}">${p.offline ? '上架' : '下架'}</button>
+        <button class="btn-mini danger" data-pdel="${p.id}">删除</button>
+      </td>
+    </tr>`).join('');
+}
+
+function renderAdminStats() {
+  const orders = loadOrders();
+  const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
+  const totalOrders = orders.length;
+  const totalItems = orders.reduce((s, o) => s + o.items.reduce((a, i) => a + i.qty, 0), 0);
+
+  $('#statGrid').innerHTML = `
+    <div class="stat-card"><div class="label">总营业额</div><div class="value">${money(totalRevenue)}</div></div>
+    <div class="stat-card"><div class="label">总订单数</div><div class="value">${totalOrders}</div></div>
+    <div class="stat-card"><div class="label">总售出件数</div><div class="value">${totalItems}</div></div>
+    <div class="stat-card"><div class="label">在售商品</div><div class="value">${PRODUCTS.filter(p => !p.offline).length}</div></div>`;
+
+  const salesMap = {};
+  orders.forEach(o => o.items.forEach(i => { salesMap[i.name] = (salesMap[i.name] || 0) + i.qty; }));
+  const ranked = Object.entries(salesMap).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const max = ranked.length ? ranked[0][1] : 1;
+  $('#statRankBars').innerHTML = ranked.length
+    ? ranked.map(([name, n]) => `
+        <div class="rank-bar-row">
+          <span class="name">${name}</span>
+          <div class="track"><div class="fill" style="width:${Math.round(n / max * 100)}%"></div></div>
+          <span class="num">${n} 件</span>
+        </div>`).join('')
+    : '<div class="empty-tip">还没有销量数据。</div>';
+}
+
+function fillImageOptions() {
+  $('#pfImage').innerHTML = IMAGE_OPTIONS.map(src => `<option value="${src}">${src.replace('images/', '')}</option>`).join('');
+}
+
+function openProductForm(p) {
+  editingProductId = p ? p.id : null;
+  $('#productFormTitle').textContent = p ? '编辑商品' : '上架新品';
+  $('#productFormWrap').classList.add('open');
+  fillImageOptions();
+  $('#pfName').value = p ? p.name : '';
+  $('#pfPrice').value = p ? p.price : '';
+  $('#pfOldPrice').value = p && p.oldPrice ? p.oldPrice : '';
+  $('#pfWeight').value = p ? p.weight : '';
+  $('#pfPet').value = p ? p.pet : 'dog';
+  $('#pfType').value = p ? p.type : 'meat';
+  $('#pfImage').value = p ? p.image : IMAGE_OPTIONS[0];
+  $('#pfSales').value = p ? p.sales : 0;
+  $('#pfDesc').value = p ? p.desc : '';
+  $('#pfIngredients').value = p ? p.ingredients.join(',') : '';
+  $('#pfHot').checked = p ? !!p.hot : false;
+}
+function closeProductForm() { $('#productFormWrap').classList.remove('open'); editingProductId = null; }
+
+$('#adminBtn').addEventListener('click', openAdmin);
+$('#adminCloseBtn').addEventListener('click', closeAdmin);
+document.querySelectorAll('.admin-tab').forEach(t => t.addEventListener('click', () => setAdminTab(t.dataset.atab)));
+$('#newProductBtn').addEventListener('click', () => openProductForm(null));
+$('#pfCancelBtn').addEventListener('click', closeProductForm);
+
+$('#productForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = $('#pfName').value.trim();
+  const price = parseFloat($('#pfPrice').value);
+  const oldPriceRaw = $('#pfOldPrice').value.trim();
+  const oldPrice = oldPriceRaw ? parseFloat(oldPriceRaw) : null;
+  const weight = $('#pfWeight').value.trim();
+  const desc = $('#pfDesc').value.trim();
+  const ingredients = $('#pfIngredients').value.split(/[,，]/).map(s => s.trim()).filter(Boolean);
+  if (!name || !(price > 0) || !weight || !desc || !ingredients.length) {
+    showToast('商品信息没填全，检查一下再保存');
+    return;
+  }
+  const data = {
+    name, price, oldPrice, weight,
+    pet: $('#pfPet').value, type: $('#pfType').value,
+    desc, ingredients,
+    sales: parseInt($('#pfSales').value, 10) || 0,
+    image: $('#pfImage').value,
+    hot: $('#pfHot').checked
+  };
+  if (editingProductId) {
+    const idx = PRODUCTS.findIndex(p => p.id === editingProductId);
+    if (idx > -1) PRODUCTS[idx] = { ...PRODUCTS[idx], ...data };
+    showToast('商品已更新');
+  } else {
+    PRODUCTS.push({ id: 'p' + Date.now(), ...data });
+    showToast('新品已上架');
+  }
+  saveProducts();
+  closeProductForm();
+  renderAdminProducts();
+  renderFilters();
+  renderProducts();
+  renderRanking();
+});
+
+document.addEventListener('click', (e) => {
+  const editBtn = e.target.closest('[data-pedit]');
+  if (editBtn) { openProductForm(productById(editBtn.dataset.pedit)); return; }
+
+  const toggleBtn = e.target.closest('[data-ptoggle]');
+  if (toggleBtn) {
+    const p = productById(toggleBtn.dataset.ptoggle);
+    if (p) { p.offline = !p.offline; saveProducts(); renderAdminProducts(); renderProducts(); showToast(p.offline ? '已下架' : '已重新上架'); }
+    return;
+  }
+
+  const delBtn = e.target.closest('[data-pdel]');
+  if (delBtn) {
+    const p = productById(delBtn.dataset.pdel);
+    if (p && confirm(`确定删除「${p.name}」吗？订单历史记录不受影响。`)) {
+      PRODUCTS = PRODUCTS.filter(x => x.id !== p.id);
+      saveProducts();
+      renderAdminProducts();
+      renderFilters();
+      renderProducts();
+      renderRanking();
+      showToast('商品已删除');
+    }
+  }
+});
+
 /* ============ 初始化 ============ */
+PRODUCTS = loadProducts();
 renderFilters();
 renderProducts();
 renderRanking();
