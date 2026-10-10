@@ -178,7 +178,11 @@ a { color: inherit; text-decoration: none; }
 .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
 .section-head h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 800; letter-spacing: -.5px; }
 .section-head p { color: var(--ink-soft); font-size: 15px; margin-top: 6px; }
-.filter-bar { display: flex; gap: 10px; flex-wrap: wrap; }
+.filter-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.filter-group + .filter-group { margin-top: 10px; }
+.filter-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-right: 4px; }
+.filter-bar { display: flex; flex-direction: column; gap: 4px; }
+.chip.type-chip.active { background: var(--primary); border-color: var(--primary); }
 .chip {
   padding: 9px 18px; border-radius: 999px; background: #fff;
   border: 1.5px solid var(--line); font-size: 14px; font-weight: 600; color: var(--ink-soft);
@@ -539,7 +543,10 @@ a { color: inherit; text-decoration: none; }
         <h2>零食货架</h2>
         <p>狗狗猫咪都有份，按口味和需求挑就行</p>
       </div>
-      <div class="filter-bar" id="filterBar"></div>
+      <div class="filter-bar">
+        <div class="filter-group" id="petFilter"></div>
+        <div class="filter-group" id="typeFilter"></div>
+      </div>
     </div>
     <div class="product-grid" id="productGrid"></div>
   </div>
@@ -867,21 +874,26 @@ const PRODUCTS = [
   }
 ];
 
-const CATEGORIES = [
-  { key: 'all',       label: '全部零食' },
-  { key: 'dog',       label: '狗零食' },
-  { key: 'cat',       label: '猫零食' },
-  { key: 'meat',      label: '肉干' },
-  { key: 'chew',      label: '磨牙棒' },
+const PET_GROUPS = [
+  { key: 'all', label: '全部宠物' },
+  { key: 'dog', label: '狗狗' },
+  { key: 'cat', label: '猫咪' }
+];
+
+const TYPE_GROUPS = [
+  { key: 'all', label: '全部零食' },
+  { key: 'meat', label: '肉干' },
+  { key: 'chew', label: '磨牙棒' },
   { key: 'nutrition', label: '营养零食' },
-  { key: 'treat',     label: '互动零食' }
+  { key: 'treat', label: '互动零食' }
 ];
 
 const PET_LABEL = { dog: '狗狗', cat: '猫咪' };
 const TYPE_LABEL = { meat: '肉干', chew: '磨牙棒', nutrition: '营养', treat: '互动' };
 
 /* ============ 状态 ============ */
-let activeCategory = 'all';
+let activePet = 'all';
+let activeType = 'all';
 const cart = new Map(); // id -> qty
 
 /* ============ 用户 / 账号（localStorage 演示） ============ */
@@ -1084,22 +1096,27 @@ function showToast(msg) {
   showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
 }
 
-function matchesFilter(product, key) {
-  if (key === 'all') return true;
-  return product.pet === key || product.type === key;
+function matchesFilter(product) {
+  const petOk = activePet === 'all' || product.pet === activePet;
+  const typeOk = activeType === 'all' || product.type === activeType;
+  return petOk && typeOk;
 }
 
 /* ============ 商品渲染 ============ */
 function renderFilters() {
-  const bar = $('#filterBar');
-  bar.innerHTML = CATEGORIES.map(c =>
-    `<button class="chip ${c.key === activeCategory ? 'active' : ''}" data-key="${c.key}">${c.label}</button>`
+  const petWrap = $('#petFilter');
+  const typeWrap = $('#typeFilter');
+  petWrap.innerHTML = '<span class="filter-label">宠物分类</span>' + PET_GROUPS.map(c =>
+    `<button class="chip ${c.key === activePet ? 'active' : ''}" data-pet="${c.key}">${c.label}</button>`
+  ).join('');
+  typeWrap.innerHTML = '<span class="filter-label">零食分类</span>' + TYPE_GROUPS.map(c =>
+    `<button class="chip type-chip ${c.key === activeType ? 'active' : ''}" data-type="${c.key}">${c.label}</button>`
   ).join('');
 }
 
 function renderProducts() {
   const grid = $('#productGrid');
-  const list = PRODUCTS.filter(p => matchesFilter(p, activeCategory));
+  const list = PRODUCTS.filter(p => matchesFilter(p));
   if (!list.length) {
     grid.innerHTML = '<div class="empty-tip">这个分类暂时没有货，换个筛选试试。</div>';
     return;
@@ -1362,9 +1379,21 @@ function closeCart() {
 
 /* ============ 事件绑定 ============ */
 document.addEventListener('click', (e) => {
-  const chip = e.target.closest('.chip');
-  if (chip) {
-    activeCategory = chip.dataset.key;
+  const petChip = e.target.closest('[data-pet]');
+  if (petChip) {
+    activePet = petChip.dataset.pet;
+    if (activePet !== 'all') {
+      const hasType = PRODUCTS.some(p => p.pet === activePet && p.type === activeType);
+      if (!hasType) activeType = 'all';
+    }
+    renderFilters();
+    renderProducts();
+    return;
+  }
+
+  const typeChip = e.target.closest('[data-type]');
+  if (typeChip) {
+    activeType = typeChip.dataset.type;
     renderFilters();
     renderProducts();
     return;
