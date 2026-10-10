@@ -178,10 +178,13 @@ a { color: inherit; text-decoration: none; }
 .section-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
 .section-head h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 800; letter-spacing: -.5px; }
 .section-head p { color: var(--ink-soft); font-size: 15px; margin-top: 6px; }
+.filter-bar { display: flex; flex-direction: column; gap: 0; background: var(--bg-soft); border-radius: var(--radius-lg); padding: 18px 20px; }
 .filter-group { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.filter-group + .filter-group { margin-top: 10px; }
-.filter-label { font-size: 13px; font-weight: 700; color: var(--ink-soft); margin-right: 4px; }
-.filter-bar { display: flex; flex-direction: column; gap: 4px; }
+.filter-group + .filter-group { margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--line); padding-left: 26px; position: relative; }
+.filter-group + .filter-group::before { content: ''; position: absolute; left: 12px; top: -7px; width: 14px; height: 14px; border-left: 2px solid var(--line); border-bottom: 2px solid var(--line); border-radius: 0 0 0 6px; }
+.filter-label { font-size: 12px; font-weight: 800; color: var(--ink-soft); letter-spacing: 1px; margin-right: 8px; }
+.filter-group.main .filter-label { color: var(--primary-deep); }
+.chip.type-chip { padding: 7px 14px; font-size: 13px; }
 .chip.type-chip.active { background: var(--primary); border-color: var(--primary); }
 .chip {
   padding: 9px 18px; border-radius: 999px; background: #fff;
@@ -544,7 +547,7 @@ a { color: inherit; text-decoration: none; }
         <p>狗狗猫咪都有份，按口味和需求挑就行</p>
       </div>
       <div class="filter-bar">
-        <div class="filter-group" id="petFilter"></div>
+        <div class="filter-group main" id="petFilter"></div>
         <div class="filter-group" id="typeFilter"></div>
       </div>
     </div>
@@ -1109,7 +1112,7 @@ function renderFilters() {
   petWrap.innerHTML = '<span class="filter-label">宠物分类</span>' + PET_GROUPS.map(c =>
     `<button class="chip ${c.key === activePet ? 'active' : ''}" data-pet="${c.key}">${c.label}</button>`
   ).join('');
-  typeWrap.innerHTML = '<span class="filter-label">零食分类</span>' + TYPE_GROUPS.map(c =>
+  typeWrap.innerHTML = '<span class="filter-label">└ 零食分类</span>' + TYPE_GROUPS.map(c =>
     `<button class="chip type-chip ${c.key === activeType ? 'active' : ''}" data-type="${c.key}">${c.label}</button>`
   ).join('');
 }
